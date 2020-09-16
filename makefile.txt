@@ -1,0 +1,20 @@
+LSTDFLG = -lstdc++ -lm -lgsl -lgslcblas
+INCLUDE = -I/usr/include/
+LIB = -L/usr/lib/
+OBJS = final
+
+all:	${OBJS}
+	rm -f *.o
+
+newregmodels.o: newregmodels.cpp newregmodels.h
+	mpic++ -g -c newregmodels.cpp -o newregmodels.o ${INCLUDE} ${LIB}
+	
+main.o: main.cpp newregmodels.h
+	mpic++ -g -c main.cpp -o main.o ${INCLUDE} ${LIB}
+
+final: main.o newregmodels.o
+	mpic++ main.o newregmodels.o -o final ${LIB} ${LSTDFLG}
+
+clean:
+	rm -f *.o
+	rm -f ${OBJS}
